@@ -1,0 +1,19 @@
+version: "3"
+services:
+    db:
+        image: mysql:5.7
+        restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: teste_db
+            MYSQL_USER: rodrigo
+            MYSQL_PASSWORD: 123456
+            MYSQL_ROOT_PASSWORD: 123456
+        networks:
+            - default
+
+volumes:
+    db_data:
