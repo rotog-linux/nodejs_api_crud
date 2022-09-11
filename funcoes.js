@@ -10,17 +10,27 @@ module.exports = {
 
         return true;
     },
-    checarID: (id, con) => {
+    checarId: (id, con, mysql) => {
+        //console.log(id);
         if (id === undefined){
+            return false;
+        }
+        if (isNaN(id)){
             return false;
         }
         if (con === undefined){
             return false;
         }
-        var sql = "SELECT id FROM clientes_tb WHERE id = " + mysql.escape(id);
+        if (mysql === undefined){
+            return false;
+        }
+
+        var sql = "SELECT * FROM clientes_tb WHERE id = " + mysql.escape(id);
         con.query(sql, (err, result) => {
             if (err) throw err;
-            return (!Object.keys(result).length === 0);
+            //console.log(Object.keys(result).length);
+            //return (Object.keys(result).length > 0);
+            return "1";
         });
     }
 }

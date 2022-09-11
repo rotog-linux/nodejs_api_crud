@@ -78,6 +78,19 @@ app.put("/cliente/:id", (request, response) => {
     const { id } = request.params;
     const { nome, login, senha, email } = request.body;
 
+    //console.log(funcoes.checarId(id, con, mysql));
+
+    // Aqui preciso estudar a questão das consultas assíncronas!
+    // Está retornando undefined porque ao consultar
+    // o banco lá na função, oo processo continua, e não
+    // espera!
+    var checarId = funcoes.checarId(id, con, mysql);
+    if (!checarId){
+        return response.json({
+            mensagem: "Cliente não encontrado"
+        });
+    }
+
     //console.log(request);
     // Montar o SQL de acordo com os parâmetros que vieram
     var sql = "UPDATE clientes_tb SET ";
