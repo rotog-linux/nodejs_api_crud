@@ -10,7 +10,7 @@ module.exports = {
 
         return true;
     },
-    checarId: (id, con, mysql) => {
+    checarId: function(id, con, mysql) {
         //console.log(id);
         if (id === undefined){
             return false;

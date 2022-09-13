@@ -80,12 +80,24 @@ app.put("/cliente/:id", (request, response) => {
 
     //console.log(funcoes.checarId(id, con, mysql));
 
-    // Aqui preciso estudar a questão das consultas assíncronas!
-    // Está retornando undefined porque ao consultar
-    // o banco lá na função, oo processo continua, e não
-    // espera!
-    var checarId = funcoes.checarId(id, con, mysql);
-    if (!checarId){
+    //var checarId = funcoes.checarId(id, con, mysql);
+
+    var checarId = function() {
+        if (id === undefined){
+            return false;
+        }
+        if (isNaN(id)){
+            return false;
+        }
+        var sql = "SELECT * FROM clientes_tb WHERE id = " + mysql.escape(id);
+        con.query(sql, (err, result) => {
+            if (err) throw err;
+            //console.log(Object.keys(result).length);
+            return (Object.keys(result).length > 0);
+        });
+    };
+
+    if (!checarId()){
         return response.json({
             mensagem: "Cliente não encontrado"
         });
