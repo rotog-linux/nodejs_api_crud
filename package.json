@@ -12,5 +12,13 @@
     "express": "^4.18.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.19"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotognin/nodejs_api_crud.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rotognin/nodejs_api_crud/issues"
+  },
+  "homepage": "https://github.com/rotognin/nodejs_api_crud#readme"
 }
