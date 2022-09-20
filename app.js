@@ -13,7 +13,6 @@ app.use(express.json());
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "123456",
     database: "teste_db",
     port: 3306
 });
@@ -74,41 +73,35 @@ app.get("/cliente/:id", (request, response) => {
     });
 });
 
+function checarUsuario(id){
+    return new Promise((resolve, reject) => {
+        if (id == undefined){
+            reject("Usuário não cadastrado 1");
+        }
+
+        if (isNaN(id)){
+            reject("Usuário não cadastrado 2");
+        }
+
+        var sql = "SELECT * FROM clientes_tb WHERE id = " + mysql.escape(id);
+        con.query(sql, (err, result) => {
+            if (err) throw err;
+            if (Object.keys(result).length > 0){
+                resolve("OK");
+            } else {
+                reject("Usuário não cadastrado 3");
+            }
+        });
+    });
+}
+
 app.put("/cliente/:id", (request, response) => {
     const { id } = request.params;
     const { nome, login, senha, email } = request.body;
 
-    //console.log(funcoes.checarId(id, con, mysql));
-
-    //var checarId = funcoes.checarId(id, con, mysql);
-
-    var checarId = function() {
-        if (id === undefined){
-            return false;
-        }
-        if (isNaN(id)){
-            return false;
-        }
-        var sql = "SELECT * FROM clientes_tb WHERE id = " + mysql.escape(id);
-        con.query(sql, (err, result) => {
-            if (err) throw err;
-            //console.log(Object.keys(result).length);
-            return (Object.keys(result).length > 0);
-        });
-    };
-
-    if (!checarId()){
-        return response.json({
-            mensagem: "Cliente não encontrado"
-        });
-    }
-
-    //console.log(request);
     // Montar o SQL de acordo com os parâmetros que vieram
     var sql = "UPDATE clientes_tb SET ";
     var vai = false;
-
-    //console.log(nome, login, senha, email, id);
 
     if (funcoes.checarCampo(nome)){
         sql += "nome = " + mysql.escape(nome) + ", ";
@@ -137,12 +130,17 @@ app.put("/cliente/:id", (request, response) => {
     }
 
     var comando = sql.substring(0, sql.length - 2) + " WHERE id = " + mysql.escape(id);
-    //console.log(comando);
 
-    con.query(comando, (err, result) => {
-        if (err) throw err;
-        return response.json(result);
-    });
+    checarUsuario(id).then(
+        (msg) => {
+            con.query(comando, (err, result) => {
+                if (err) throw err;
+                return response.json(result);
+            });
+        },
+        (msg) => {
+            return response.json({ mensagem: msg });
+        });
 });
 
 app.listen(3001, () => console.log("Servidor rodando na porta 3001"));

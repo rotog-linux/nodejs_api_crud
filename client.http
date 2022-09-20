@@ -8,10 +8,10 @@ POST http://localhost:3001/cliente HTTP/1.1
 content-type: application/json
 
 {
-    "nome": "Mario das Neves",
-    "login": "mario",
+    "nome": "Rodrigo Tognin",
+    "login": "rotog",
     "senha": "123",
-    "email": "mario@outlook.com"
+    "email": "rotog@outlook.com"
 }
 
 ###
@@ -21,10 +21,10 @@ content-type: application/json
 
 ###
 
-PUT http://localhost:3001/cliente/1 HTTP/1.1
+PUT http://localhost:3001/cliente/2 HTTP/1.1
 content-type: application/json
 
 {
     "nome": "Rodrigo Tognin",
-    "email": "wmetalboy@gmail.com"
+    "email": "rotog@gmail.com"
 }
